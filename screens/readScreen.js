@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View, Flatlist,TouchableOpacity,TextInput,StyleSheet} from 'react-native';
+import { Text, View, FlatList,TouchableOpacity,TextInput,StyleSheet} from 'react-native';
 import {ScrollView} from 'react-native-gesture-handler'
 import db from '../config'
 
@@ -61,7 +61,7 @@ export default class ReadScreen extends React.Component {
         <View style={styles.searchBar}>
       <TextInput 
         style ={styles.bar}
-        placeholder = "Enter Book Id or Student Id"
+        placeholder = "Enter your id"
         onChangeText={(text)=>{this.setState({search:text})}}/>
         <TouchableOpacity
           style = {styles.searchButton}
@@ -71,22 +71,22 @@ export default class ReadScreen extends React.Component {
         </TouchableOpacity>
         </View>
 
-
-        <ScrollView>
-          {this.state.allStories.map((writing)=>{
-            return(
-              <View key={index} style={{borderBottomWidth:2}}>
-             <Text>{"StoriesId"+writing.storiesId}</Text>
-            <Text>{"Writing Type"+writing.writingType}</Text>
-            <Text>{"Date:"+writing.date.toDate()}</Text>
+        <FlatList
+          data={this.state.allStories}
+          renderItem={({item})=>(
+            <View style={{borderBottomWidth:2}}>
+             <Text>{"StoriesId"+item.storiesId}</Text>
+            <Text>{"Writing Type"+item.writingType}</Text>
+            <Text>{"Date:"+item.date.toDate()}</Text>
          
-        </View>
-         )
-          })}
-        
-        
-        </ScrollView>
-        </View>
+            </View>
+          )}
+          keyExtractor= {(item, index)=> index.toString()}
+          onEndReached ={this.retriveStories}
+          onEndReachedThreshold={0.7}
+        /> 
+       
+  </View>
       );
     }
   }
